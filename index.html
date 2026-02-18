@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal Imsakiyah Otomatis 1447 H</title>
+    
+    <script src="https://unpkg.com/adhan@4.4.3/lib/bundles/adhan.umd.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-green: #065f46;
+            --light-green: #ecfdf5;
+            --accent-orange: #d97706;
+            --pdf-red: #dc2626;
+            --text-main: #1f2937;
+            --white: #ffffff;
+        }
+
+        body { 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+            background-color: #f3f4f6; 
+            color: var(--text-main); 
+            margin: 0;
+            padding: 20px;
+            display: flex; 
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-container { 
+            max-width: 950px; 
+            width: 100%;
+        }
+
+        /* --- AREA CETAK (Kertas Putih) --- */
+        #printable-card {
+            background: var(--white);
+            padding: 30px; 
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            position: relative; 
+            text-align: center; 
+        }
+
+        /* --- REVISI CSS LOGO (Dua Logo Berdampingan) --- */
+        .logo-container {
+            display: flex;
+            justify-content: center; /* Membuat isi container berada di tengah horizontal */
+            align-items: center; /* Membuat isi container berada di tengah vertikal */
+            gap: 20px; /* Jarak antar logo */
+            margin-bottom: 15px; /* Jarak di bawah container logo sebelum judul H1 */
+        }
+
+        .header-logo {
+            /* Hapus display: block dan margin auto lama karena sudah diatur parent-nya */
+            max-width: 120px; /* Ukuran sedikit diperkecil agar muat dua dengan seimbang */
+            height: auto;
+            object-fit: contain; /* Memastikan gambar tidak terpotong/gepeng */
+        }
+        /* ---------------------------------------------- */
+
+        h1 { 
+            text-align: center; 
+            color: var(--primary-green); 
+            margin-bottom: 5px;
+            margin-top: 0; 
+            font-size: 1.6rem;
+        }
+
+        .subtitle { 
+            text-align: center; 
+            color: #6b7280; 
+            margin-bottom: 20px; 
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* --- TOMBOL AKSI --- */
+        .action-buttons-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 25px; 
+        }
+
+        .btn-download {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .btn-download:hover { transform: translateY(-2px); opacity: 0.95; }
+        .btn-download:active { transform: scale(0.98); }
+        .btn-img { background-color: var(--accent-orange); }
+        .btn-pdf { background-color: var(--pdf-red); }
+
+        /* --- TABEL --- */
+        .table-wrapper {
+            width: 100%;
+            overflow: visible; 
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+
+        th { 
+            background-color: var(--primary-green); 
+            color: var(--white); 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            font-size: 0.75rem; 
+            letter-spacing: 0.05em;
+            padding: 12px 8px; 
+        }
+        th:first-child { border-top-left-radius: 10px; }
+        th:last-child { border-top-right-radius: 10px; }
+
+        td { 
+            padding: 10px 8px; 
+            text-align: center; 
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 0.9rem;
+        }
+
+        tr:nth-child(even) { background-color: #fafafa; }
+        .hijri-col { font-weight: 700; color: var(--primary-green); text-align: left; }
+        .date-col { text-align: left; font-weight: 600; color: #374151; }
+        .highlight { font-weight: bold; color: var(--accent-orange); background: #fffbeb; }
+        .maghrib { font-weight: 800; color: var(--primary-green); }
+
+        #status-message {
+            text-align: center; padding: 20px; font-style: italic; color: var(--accent-orange);
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    
+    <div id="printable-card">
+        <div id="status-message">Sedang mendeteksi lokasi... Mohon izinkan akses lokasi.</div>
+        
+        <div id="content" style="display:none;">
+            <div class="logo-container">
+                <img src="logokms.png" alt="Logo KMS" class="header-logo" onerror="this.style.display='none'">
+                <img src="logoksj.png" alt="Logo KSJ" class="header-logo" onerror="this.style.display='none'">
+            </div>
+            <h1>Jadwal Imsakiyah <br>
+                Ramadhan 1447 H / 2026 M</h1>
+            <div class="subtitle">
+                <strong id="location-name">Lokasi Tidak Terdeteksi</strong><br>
+                Metode Hisab Kemenag RI • Awal Ramadhan: Kamis, 19 Februari 2026
+            </div>
+
+            <div class="action-buttons-container" id="btnContainer" data-html2canvas-ignore="true">
+                <button onclick="downloadJadwal('image')" class="btn-download btn-img">
+                    📷 Simpan Gambar
+                </button>
+                <button onclick="downloadJadwal('pdf')" class="btn-download btn-pdf">
+                    📄 Simpan PDF (A4)
+                </button>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Masehi</th>
+                            <th>Imsak</th>
+                            <th>Subuh</th>
+                            <th>Zuhur</th>
+                            <th>Ashar</th>
+                            <th>Maghrib</th>
+                            <th>Isya</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scheduleBody"></tbody>
+                </table>
+            </div>
+            
+            <div style="margin-top: 20px; text-align: center; font-size: 0.7rem; color: #9ca3af;">
+                Jadwal ini dihitung secara otomatis berdasarkan koordinat lokasi Anda.
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // --- SCRIPT JAVASCRIPT DI BAWAH INI TIDAK ADA PERUBAHAN DARI VERSI SEBELUMNYA ---
+    const { jsPDF } = window.jspdf;
+    const START_DATE = new Date(2026, 1, 19); 
+    const DEFAULT_COORDS = { lat: -6.2000, lng: 106.8167 }; 
+
+    function init() {
+        if (navigator.geolocation) {
+             navigator.geolocation.getCurrentPosition(onPositionFound, onPositionError);
+        } else {
+            onPositionError();
+        }
+    }
+
+    function onPositionFound(position) {
+        const { latitude, longitude } = position.coords;
+        updateLocationName(latitude, longitude);
+        generateSchedule(latitude, longitude);
+    }
+
+    function onPositionError() {
+        alert("Akses lokasi gagal. Menggunakan lokasi default (Jakarta).");
+        document.getElementById('location-name').innerText = "Jakarta Pusat (Default)";
+        generateSchedule(DEFAULT_COORDS.lat, DEFAULT_COORDS.lng);
+    }
+
+    function updateLocationName(lat, lng) {
+        fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=id`)
+            .then(res => res.json())
+            .then(data => {
+                const location = data.locality || data.city || data.principalSubdivision || "Lokasi Anda";
+                 document.getElementById('location-name').innerText = `Wilayah: ${location} (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+            })
+            .catch(() => {
+                document.getElementById('location-name').innerText = `Koordinat: (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+            });
+    }
+
+    function generateSchedule(lat, lng) {
+        document.getElementById('status-message').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+        document.getElementById('btnContainer').style.display = 'flex'; 
+
+        const coords = new adhan.Coordinates(lat, lng);
+        const params = adhan.CalculationMethod.Singapore();
+        params.fajrAngle = 20;
+        params.ishaAngle = 18;
+        params.adjustments = { fajr: 2, dhuhr: 2, asr: 2, maghrib: 2, isha: 2 };
+
+        const tbody = document.getElementById('scheduleBody');
+        tbody.innerHTML = ''; 
+
+        const fmt = new Intl.DateTimeFormat('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false });
+        const dateFmt = new Intl.DateTimeFormat('id-ID', { weekday: 'short', day: 'numeric', month: 'short' });
+
+        for (let i = 0; i < 30; i++) {
+            let cur = new Date(START_DATE);
+            cur.setDate(START_DATE.getDate() + i);
+            const p = new adhan.PrayerTimes(coords, cur, params);
+            const imsak = new Date(p.fajr); imsak.setMinutes(imsak.getMinutes() - 10);
+
+            tbody.innerHTML += `
+                <tr>
+                    <td class="hijri-col">${i + 1} Ramadhan</td>
+                    <td class="date-col">${dateFmt.format(cur)}</td>
+                    <td class="highlight">${fmt.format(imsak)}</td>
+                    <td>${fmt.format(p.fajr)}</td>
+                    <td>${fmt.format(p.dhuhr)}</td>
+                    <td>${fmt.format(p.asr)}</td>
+                    <td class="maghrib">${fmt.format(p.maghrib)}</td>
+                    <td>${fmt.format(p.isha)}</td>
+                </tr>`;
+        }
+    }
+
+    function downloadJadwal(type) {
+        const element = document.getElementById("printable-card");
+        const fileName = "Jadwal-Imsakiyah-1447H";
+
+        const options = {
+            scale: 2, 
+            useCORS: true, 
+            allowTaint: true,
+            backgroundColor: "#ffffff"
+        };
+
+        html2canvas(element, options).then(canvas => {
+            if (type === 'image') {
+                const link = document.createElement('a');
+                link.download = `${fileName}.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            } else if (type === 'pdf') {
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pageWidth = pdf.internal.pageSize.getWidth(); 
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                const margin = 10; 
+                
+                const maxPrintWidth = pageWidth - (margin * 2);
+                const maxPrintHeight = pageHeight - (margin * 2);
+
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+
+                const widthRatio = maxPrintWidth / imgWidth;
+                const heightRatio = maxPrintHeight / imgHeight;
+                
+                const ratio = Math.min(widthRatio, heightRatio);
+
+                const finalWidth = imgWidth * ratio;
+                const finalHeight = imgHeight * ratio;
+
+                pdf.addImage(canvas.toDataURL("image/png"), 'PNG', margin, margin, finalWidth, finalHeight);
+                pdf.save(`${fileName}.pdf`);
+            }
+        }).catch(err => alert("Gagal menyimpan. Jika Anda menjalankan file ini secara lokal (file:///), browser mungkin memblokir akses ke gambar karena alasan keamanan (CORS). Coba gunakan local web server. Error detail: " + err));
+    }
+
+    init();
+</script>
+
+</body>
+</html>
