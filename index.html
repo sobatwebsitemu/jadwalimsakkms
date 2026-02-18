@@ -177,13 +177,11 @@
         .date-col { text-align: center; font-weight: 600; color: #4b5563; }
         
         /* --- PENYOROTAN WAKTU KRUSIAL --- */
-        /* Imsak (Orange Lembut) */
         .highlight-imsak { 
             background-color: var(--light-orange) !important; 
             color: var(--accent-orange); 
             font-weight: 800; 
         }
-        /* Maghrib (Hijau Segar) */
         .highlight-maghrib { 
             background-color: var(--light-green) !important; 
             color: var(--primary-green); 
@@ -193,12 +191,72 @@
         #status-message {
             text-align: center; padding: 20px; font-style: italic; color: var(--accent-orange);
         }
+
+        /* --- RESPONSIVE MOBILE (CARD LAYOUT) --- */
+        @media (max-width: 768px) {
+            .action-buttons-container {
+                flex-direction: column;
+            }
+
+            table thead {
+                display: none;
+            }
+
+            table, tbody, tr, td {
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            tr {
+                margin-bottom: 20px;
+                border: 1px solid #e5e7eb;
+                border-radius: 12px;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+                overflow: hidden;
+            }
+
+            td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px 15px;
+                text-align: right;
+                border-bottom: 1px solid #f3f4f6;
+            }
+
+            td:last-child {
+                border-bottom: none;
+            }
+
+            td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: var(--text-muted);
+                text-transform: uppercase;
+                font-size: 0.8rem;
+            }
+
+            .hijri-col {
+                background: linear-gradient(135deg, var(--primary-green) 0%, var(--gradient-green) 100%);
+                color: white;
+                justify-content: center;
+                font-size: 1.05rem;
+            }
+            .hijri-col::before { display: none; } 
+            
+            .date-col {
+                justify-content: center;
+                background-color: #f9fafb;
+                font-size: 0.9rem;
+            }
+            .date-col::before { display: none; }
+        }
     </style>
 </head>
 <body>
 
 <div class="main-container">
-    
     <div id="printable-card">
         <div id="status-message">Sedang mendeteksi lokasi... Mohon izinkan akses lokasi.</div>
         
@@ -251,7 +309,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <script>
@@ -322,17 +379,17 @@
             const p = new adhan.PrayerTimes(coords, cur, params);
             const imsak = new Date(p.fajr); imsak.setMinutes(imsak.getMinutes() - 10);
 
-            // Perhatikan penggunaan class "highlight-imsak" dan "highlight-maghrib" di bawah ini
+            // Penambahan data-label agar responsif di mobile
             tbody.innerHTML += `
                 <tr>
                     <td class="hijri-col">${i + 1} Ramadhan</td>
                     <td class="date-col">${dateFmt.format(cur)}</td>
-                    <td class="highlight-imsak">${fmt.format(imsak)}</td>
-                    <td>${fmt.format(p.fajr)}</td>
-                    <td>${fmt.format(p.dhuhr)}</td>
-                    <td>${fmt.format(p.asr)}</td>
-                    <td class="highlight-maghrib">${fmt.format(p.maghrib)}</td>
-                    <td>${fmt.format(p.isha)}</td>
+                    <td class="highlight-imsak" data-label="Imsak">${fmt.format(imsak)}</td>
+                    <td data-label="Subuh">${fmt.format(p.fajr)}</td>
+                    <td data-label="Zuhur">${fmt.format(p.dhuhr)}</td>
+                    <td data-label="Ashar">${fmt.format(p.asr)}</td>
+                    <td class="highlight-maghrib" data-label="Maghrib">${fmt.format(p.maghrib)}</td>
+                    <td data-label="Isya">${fmt.format(p.isha)}</td>
                 </tr>`;
         }
     }
