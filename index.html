@@ -45,22 +45,35 @@
             text-align: center; 
         }
 
-        /* --- REVISI CSS LOGO (Dua Logo Berdampingan) --- */
+        /* --- REVISI CSS LOGO (4 Logo: Kiri, Tengah-Grup, Kanan) --- */
+        
+        /* Wadah utama untuk semua logo */
         .logo-container {
             display: flex;
-            justify-content: center; /* Membuat isi container berada di tengah horizontal */
-            align-items: center; /* Membuat isi container berada di tengah vertikal */
-            gap: 20px; /* Jarak antar logo */
-            margin-bottom: 15px; /* Jarak di bawah container logo sebelum judul H1 */
+            /* 'space-between' mendorong item pertama ke kiri pol, dan terakhir ke kanan pol */
+            justify-content: space-between; 
+            align-items: center; /* Menyejajarkan secara vertikal di tengah */
+            margin-bottom: 15px; 
+            width: 100%; /* Memastikan wadah mengambil lebar penuh */
         }
 
-        .header-logo {
-            /* Hapus display: block dan margin auto lama karena sudah diatur parent-nya */
-            max-width: 120px; /* Ukuran sedikit diperkecil agar muat dua dengan seimbang */
-            height: auto;
-            object-fit: contain; /* Memastikan gambar tidak terpotong/gepeng */
+        /* Wadah khusus untuk grup logo tengah (KMS & KSJ) */
+        .center-logo-group {
+            display: flex;
+            gap: 20px; /* Jarak antar logo di grup tengah */
+            justify-content: center;
+            align-items: center;
         }
-        /* ---------------------------------------------- */
+
+        /* Gaya umum untuk semua gambar logo */
+        .logo-img {
+            /* Ukuran diperkecil sedikit dari sebelumnya (120px -> 90px) 
+               agar 4 logo muat sejajar dengan rapi */
+            max-width: 90px; 
+            height: auto;
+            object-fit: contain; 
+        }
+        /* --------------------------------------------------------- */
 
         h1 { 
             text-align: center; 
@@ -152,9 +165,16 @@
         <div id="status-message">Sedang mendeteksi lokasi... Mohon izinkan akses lokasi.</div>
         
         <div id="content" style="display:none;">
+            
             <div class="logo-container">
-                <img src="logokms.png" alt="Logo KMS" class="header-logo" onerror="this.style.display='none'">
-                <img src="logoksj.png" alt="Logo KSJ" class="header-logo" onerror="this.style.display='none'">
+                <img src="logokph.png" alt="Logo KPH" class="logo-img" onerror="this.style.display='none'">
+                
+                <div class="center-logo-group">
+                    <img src="logokms.png" alt="Logo KMS" class="logo-img" onerror="this.style.display='none'">
+                    <img src="logoksj.png" alt="Logo KSJ" class="logo-img" onerror="this.style.display='none'">
+                </div>
+
+                <img src="logombl.png" alt="Logo MBL" class="logo-img" onerror="this.style.display='none'">
             </div>
             <h1>Jadwal Imsakiyah <br>
                 Ramadhan 1447 H / 2026 M</h1>
@@ -191,7 +211,7 @@
             </div>
             
             <div style="margin-top: 20px; text-align: center; font-size: 0.7rem; color: #9ca3af;">
-                Jadwal ini dihitung secara otomatis berdasarkan koordinat lokasi Anda.
+                *Jadwal ini dihitung secara otomatis berdasarkan koordinat lokasi Anda.
             </div>
         </div>
     </div>
