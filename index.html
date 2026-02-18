@@ -12,10 +12,13 @@
     <style>
         :root {
             --primary-green: #065f46;
+            --gradient-green: #047857;
             --light-green: #ecfdf5;
             --accent-orange: #d97706;
+            --light-orange: #fffbeb;
             --pdf-red: #dc2626;
             --text-main: #1f2937;
+            --text-muted: #6b7280;
             --white: #ffffff;
         }
 
@@ -35,7 +38,6 @@
             width: 100%;
         }
 
-        /* --- AREA CETAK (Kertas Putih) --- */
         #printable-card {
             background: var(--white);
             padding: 30px; 
@@ -45,58 +47,52 @@
             text-align: center; 
         }
 
-        /* --- REVISI CSS LOGO (4 Logo: Kiri, Tengah-Grup, Kanan) --- */
-        
-        /* Wadah utama untuk semua logo */
+        /* --- LOGO --- */
         .logo-container {
             display: flex;
-            /* 'space-between' mendorong item pertama ke kiri pol, dan terakhir ke kanan pol */
             justify-content: space-between; 
-            align-items: center; /* Menyejajarkan secara vertikal di tengah */
+            align-items: center; 
             margin-bottom: 15px; 
-            width: 100%; /* Memastikan wadah mengambil lebar penuh */
+            width: 100%; 
         }
 
-        /* Wadah khusus untuk grup logo tengah (KMS & KSJ) */
         .center-logo-group {
             display: flex;
-            gap: 20px; /* Jarak antar logo di grup tengah */
+            gap: 20px; 
             justify-content: center;
             align-items: center;
         }
 
-        /* Gaya umum untuk semua gambar logo */
         .logo-img {
-            /* Ukuran diperkecil sedikit dari sebelumnya (120px -> 90px) 
-               agar 4 logo muat sejajar dengan rapi */
             max-width: 90px; 
             height: auto;
             object-fit: contain; 
         }
-        /* --------------------------------------------------------- */
 
+        /* --- TYPOGRAPHY --- */
         h1 { 
             text-align: center; 
             color: var(--primary-green); 
             margin-bottom: 5px;
             margin-top: 0; 
-            font-size: 1.6rem;
+            font-size: 1.8rem;
+            letter-spacing: -0.02em;
         }
 
         .subtitle { 
             text-align: center; 
-            color: #6b7280; 
-            margin-bottom: 20px; 
-            font-size: 0.9rem;
-            line-height: 1.5;
+            color: var(--text-muted); 
+            margin-bottom: 25px; 
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
-        /* --- TOMBOL AKSI --- */
+        /* --- TOMBOL --- */
         .action-buttons-container {
             display: flex;
             gap: 15px;
             justify-content: center;
-            margin-bottom: 25px; 
+            margin-bottom: 30px; 
         }
 
         .btn-download {
@@ -114,43 +110,85 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        .btn-download:hover { transform: translateY(-2px); opacity: 0.95; }
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
         .btn-download:active { transform: scale(0.98); }
         .btn-img { background-color: var(--accent-orange); }
         .btn-pdf { background-color: var(--pdf-red); }
 
-        /* --- TABEL --- */
+        /* --- TABEL PREMIUM --- */
         .table-wrapper {
             width: 100%;
             overflow: visible; 
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            background: white;
         }
 
-        table { width: 100%; border-collapse: collapse; }
+        table { 
+            width: 100%; 
+            border-collapse: separate; 
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
 
+        /* Header Bergradasi */
         th { 
-            background-color: var(--primary-green); 
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--gradient-green) 100%);
             color: var(--white); 
             font-weight: 700; 
             text-transform: uppercase; 
-            font-size: 0.75rem; 
+            font-size: 0.8rem; 
             letter-spacing: 0.05em;
-            padding: 12px 8px; 
+            padding: 16px 8px; 
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
-        th:first-child { border-top-left-radius: 10px; }
-        th:last-child { border-top-right-radius: 10px; }
 
+        /* Sel Tabel */
         td { 
-            padding: 10px 8px; 
+            padding: 12px 8px; 
             text-align: center; 
             border-bottom: 1px solid #f3f4f6;
             font-size: 0.9rem;
+            transition: background-color 0.2s ease;
         }
 
-        tr:nth-child(even) { background-color: #fafafa; }
-        .hijri-col { font-weight: 700; color: var(--primary-green); text-align: left; }
-        .date-col { text-align: left; font-weight: 600; color: #374151; }
-        .highlight { font-weight: bold; color: var(--accent-orange); background: #fffbeb; }
-        .maghrib { font-weight: 800; color: var(--primary-green); }
+        /* Striping warna baris yang sangat lembut */
+        tr:nth-child(even) td { background-color: #fafafa; }
+        
+        /* Efek Hover Baris */
+        tbody tr {
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+        }
+        tbody tr:hover {
+            transform: scale(1.01);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            z-index: 10;
+            background-color: white;
+        }
+        tbody tr:hover td {
+            background-color: white;
+            border-bottom-color: transparent;
+        }
+        
+        /* Kolom Teks Khusus */
+        .hijri-col { font-weight: 700; color: var(--primary-green); text-align: center; }
+        .date-col { text-align: center; font-weight: 600; color: #4b5563; }
+        
+        /* --- PENYOROTAN WAKTU KRUSIAL --- */
+        /* Imsak (Orange Lembut) */
+        .highlight-imsak { 
+            background-color: var(--light-orange) !important; 
+            color: var(--accent-orange); 
+            font-weight: 800; 
+        }
+        /* Maghrib (Hijau Segar) */
+        .highlight-maghrib { 
+            background-color: var(--light-green) !important; 
+            color: var(--primary-green); 
+            font-weight: 800; 
+        }
 
         #status-message {
             text-align: center; padding: 20px; font-style: italic; color: var(--accent-orange);
@@ -168,16 +206,14 @@
             
             <div class="logo-container">
                 <img src="logokph.png" alt="Logo KPH" class="logo-img" onerror="this.style.display='none'">
-                
                 <div class="center-logo-group">
                     <img src="logokms.png" alt="Logo KMS" class="logo-img" onerror="this.style.display='none'">
                     <img src="logoksj.png" alt="Logo KSJ" class="logo-img" onerror="this.style.display='none'">
                 </div>
-
                 <img src="logombl.png" alt="Logo MBL" class="logo-img" onerror="this.style.display='none'">
             </div>
-            <h1>Jadwal Imsakiyah <br>
-                Ramadhan 1447 H / 2026 M</h1>
+
+            <h1>Jadwal Imsakiyah <br>Puasa Ramadhan 1447 H / 2026 M</h1>
             <div class="subtitle">
                 <strong id="location-name">Lokasi Tidak Terdeteksi</strong><br>
                 Metode Hisab Kemenag RI • Awal Ramadhan: Kamis, 19 Februari 2026
@@ -196,8 +232,8 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>Hari Ke</th>
                             <th>Tanggal</th>
-                            <th>Masehi</th>
                             <th>Imsak</th>
                             <th>Subuh</th>
                             <th>Zuhur</th>
@@ -210,7 +246,7 @@
                 </table>
             </div>
             
-            <div style="margin-top: 20px; text-align: center; font-size: 0.7rem; color: #9ca3af;">
+            <div style="margin-top: 25px; text-align: center; font-size: 0.75rem; color: #9ca3af;">
                 *Jadwal ini dihitung secara otomatis berdasarkan koordinat lokasi Anda.
             </div>
         </div>
@@ -219,7 +255,6 @@
 </div>
 
 <script>
-    // --- SCRIPT JAVASCRIPT DI BAWAH INI TIDAK ADA PERUBAHAN DARI VERSI SEBELUMNYA ---
     const { jsPDF } = window.jspdf;
     const START_DATE = new Date(2026, 1, 19); 
     const DEFAULT_COORDS = { lat: -6.2000, lng: 106.8167 }; 
@@ -248,8 +283,16 @@
         fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=id`)
             .then(res => res.json())
             .then(data => {
-                const location = data.locality || data.city || data.principalSubdivision || "Lokasi Anda";
-                 document.getElementById('location-name').innerText = `Wilayah: ${location} (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+                const areaInfo = [
+                    data.locality,
+                    data.city,
+                    data.principalSubdivision
+                ];
+
+                const fullLocation = areaInfo.filter(item => item).join(", ");
+                const finalLocation = fullLocation || "Lokasi Anda";
+
+                document.getElementById('location-name').innerText = `Wilayah: ${finalLocation} (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
             })
             .catch(() => {
                 document.getElementById('location-name').innerText = `Koordinat: (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
@@ -279,15 +322,16 @@
             const p = new adhan.PrayerTimes(coords, cur, params);
             const imsak = new Date(p.fajr); imsak.setMinutes(imsak.getMinutes() - 10);
 
+            // Perhatikan penggunaan class "highlight-imsak" dan "highlight-maghrib" di bawah ini
             tbody.innerHTML += `
                 <tr>
                     <td class="hijri-col">${i + 1} Ramadhan</td>
                     <td class="date-col">${dateFmt.format(cur)}</td>
-                    <td class="highlight">${fmt.format(imsak)}</td>
+                    <td class="highlight-imsak">${fmt.format(imsak)}</td>
                     <td>${fmt.format(p.fajr)}</td>
                     <td>${fmt.format(p.dhuhr)}</td>
                     <td>${fmt.format(p.asr)}</td>
-                    <td class="maghrib">${fmt.format(p.maghrib)}</td>
+                    <td class="highlight-maghrib">${fmt.format(p.maghrib)}</td>
                     <td>${fmt.format(p.isha)}</td>
                 </tr>`;
         }
@@ -324,16 +368,18 @@
 
                 const widthRatio = maxPrintWidth / imgWidth;
                 const heightRatio = maxPrintHeight / imgHeight;
-                
                 const ratio = Math.min(widthRatio, heightRatio);
 
                 const finalWidth = imgWidth * ratio;
                 const finalHeight = imgHeight * ratio;
 
-                pdf.addImage(canvas.toDataURL("image/png"), 'PNG', margin, margin, finalWidth, finalHeight);
+                const xPosition = (pageWidth - finalWidth) / 2;
+                const yPosition = (pageHeight - finalHeight) / 2;
+
+                pdf.addImage(canvas.toDataURL("image/png"), 'PNG', xPosition, yPosition, finalWidth, finalHeight);
                 pdf.save(`${fileName}.pdf`);
             }
-        }).catch(err => alert("Gagal menyimpan. Jika Anda menjalankan file ini secara lokal (file:///), browser mungkin memblokir akses ke gambar karena alasan keamanan (CORS). Coba gunakan local web server. Error detail: " + err));
+        }).catch(err => alert("Gagal menyimpan. Jika menjalankan file ini secara lokal (file:///), browser mungkin memblokir akses ke gambar (CORS). Coba gunakan local web server. Error: " + err));
     }
 
     init();
